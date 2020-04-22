@@ -28,33 +28,37 @@ connection.connect(function(err) {
 function start() {
     inquirer.prompt({
         name: "start",
+        message: "What would you like to do?",
         type: "list",
         choices: [
+            "View All Departments",
+            "View All Roles",
             "View All Employees",
-            "View All Employees By Department",
-            "View All Employees By Manager",
+            "Add Department",
+            "Add Role",
             "Add Employee",
-            "Remove Employee",
             "Update Employee Role",
             "Update Employee Manager",
-            "View All Roles",
-            "Add New Role",
-            "Remove Roll"
+            "View Employees by Manager",
+            "Delete Department",
+            "Delete Role",
+            "Delete Employee",
+            "View Budget of Department"
         ]
     }).then(function(answer) {
-        if (answer.start === "View All Employees") {
+        if (answer.start === "View All Departments") {
+            viewDepartment();
+        } else if (answer.start === "View All Roles") {
+            viewRole();
+        } else if (answer.start === "View All Employees") {
+            viewEmployee();
+        } else if (answer.start === "Add Department") {
             //call function for that here
             console.log("Function not available yet, sorry!");
-        } else if (answer.start === "View All Employees By Department") {
-            //call function for that here
-            console.log("Function not available yet, sorry!");
-        } else if (answer.start === "View All Employees By Manager") {
+        } else if (answer.start === "Add Role") {
             //call function for that here
             console.log("Function not available yet, sorry!");
         } else if (answer.start === "Add Employee") {
-            //call function for that here
-            console.log("Function not available yet, sorry!");
-        } else if (answer.start === "Remove Employee") {
             //call function for that here
             console.log("Function not available yet, sorry!");
         } else if (answer.start === "Update Employee Role") {
@@ -63,13 +67,19 @@ function start() {
         } else if (answer.start === "Update Employee Manager") {
             //call function for that here
             console.log("Function not available yet, sorry!");
-        } else if (answer.start === "View All Roles") {
+        } else if (answer.start === "View Employees by Manager") {
             //call function for that here
             console.log("Function not available yet, sorry!");
-        } else if (answer.start === "Add New Role") {
+        } else if (answer.start === "Delete Department") {
             //call function for that here
             console.log("Function not available yet, sorry!");
-        } else if (answer.start === "Remove Roll") {
+        } else if (answer.start === "Delete Role") {
+            //call function for that here
+            console.log("Function not available yet, sorry!");
+        } else if (answer.start === "Delete Employee") {
+            //call function for that here
+            console.log("Function not available yet, sorry!");
+        } else if (answer.start === "View Budget of Department") {
             //call function for that here
             console.log("Function not available yet, sorry!");
         } else {
@@ -78,3 +88,37 @@ function start() {
         }
     });
 }
+
+//make a function for each of the choices at the start
+//that switches back to start at the end of them
+
+//function to view all departments
+function viewDepartment() {
+    connection.query("SELECT * FROM role", function(err, res){
+        if (err) throw err;
+        console.table(res);
+        console.log("----------------------");
+        start();
+    })
+}
+
+//function to view all roles
+function viewRole() {
+    connection.query("SELECT * FROM role", function(err, res){
+        if (err) throw err;
+        console.table(res);
+        console.log("----------------------");
+        start();
+    })
+}
+
+//function to view all employees
+function viewEmployee() {
+    connection.query("SELECT * FROM employee", function(err, res){
+        if (err) throw err;
+        console.table(res);
+        console.log("----------------------");
+        start();
+    })
+}
+
