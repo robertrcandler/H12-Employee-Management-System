@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 
   // Your password
   password: "Max2003!",
-  database: "ice_creamDB"
+  database: "CMS_db"
 });
 
 connection.connect(function(err) {
@@ -61,11 +61,9 @@ function start() {
         } else if (answer.start === "Update Employee Role") {
             employeeRole();
         } else if (answer.start === "Update Employee Manager") {
-            //call function for that here
-            console.log("Function not available yet, sorry!");
+            employeeManager();
         } else if (answer.start === "View Employees by Manager") {
-            //call function for that here
-            console.log("Function not available yet, sorry!");
+            underManager();
         } else if (answer.start === "Delete Department") {
             //call function for that here
             console.log("Function not available yet, sorry!");
@@ -146,7 +144,7 @@ function addRole() {
         console.table(res);
     });
 
-    inquirer.prompt({
+    inquirer.prompt([{
         name: "title",
         type: "input",
         message: "What is the title of the new role?"},
@@ -156,7 +154,7 @@ function addRole() {
         {name: "department_id",
         type: "input",
         message: "What is the id of the department for this role?"
-    }).then(function(answer) {
+    }]).then(function(answer) {
         connection.query("INSERT INTO role SET ?",
             {title: answer.title,
             salary: answer.salary,
@@ -179,7 +177,7 @@ function addEmployee() {
         console.table(res);
     });
 
-    inquirer.prompt({
+    inquirer.prompt([{
         name: "first_name",
         type: "input",
         message: "What is the new employee first name?"},
@@ -192,7 +190,7 @@ function addEmployee() {
         {name: "manager_id",
         type: "input",
         message: "What is the employee id of the new employee's manager?"
-    }).then(function(answer) {
+    }]).then(function(answer) {
         connection.query("INSERT INTO employee SET ?",
             {first_name: answer.first_name,
             last_name: answer.last_name,
@@ -221,16 +219,44 @@ function employeeRole() {
         console.table(res);
     });
 
-    inquirer.prompt({
+    inquirer.prompt([{
         name: "employee_id",
         type: "input",
         message: "What is the id of the employee in question?"},
         {name: "role_id",
         type: "input",
         message: "What is the id of the new role for the employee?"
-    }).then(function(answer) {
+    }]).then(function(answer) {
         connection.query("UPDATE employee SET role_id = ? WHERE id = ?",
             [answer.role_id, answer.employee_id],
+            function(err, res) {
+                if (err) throw err;
+                console.table(res);
+                console.log("----------------------");
+                start();
+            }
+        )
+    });
+}
+
+//function to update employee Manager
+function employeeManager() {
+    //show current employees to help user choose input
+    connection.query("SELECT * FROM employee", function(err, res){
+        if (err) throw err;
+        console.table(res);
+    });
+
+    inquirer.prompt([{
+        name: "employee_id",
+        type: "input",
+        message: "What is the id of the employee in question?"},
+        {name: "manager_id",
+        type: "input",
+        message: "What is the id of the new manager for the employee?"
+    }]).then(function(answer) {
+        connection.query("UPDATE employee SET role_id = ? WHERE id = ?",
+            [answer.manager_id, answer.employee_id],
             function(err, res) {
                 if (err) throw err;
                 console.table(res);

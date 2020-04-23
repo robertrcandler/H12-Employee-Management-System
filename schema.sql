@@ -14,7 +14,8 @@ CREATE TABLE department (
 CREATE TABLE role (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NULL,
-  salary DECIMAL(10,10) NULL,
+  -- was having problems with decimal then double, finally worked as int
+  salary INT NULL,
   -- department_id references the id from department table
   department_id INT NOT NULL
 );
@@ -32,16 +33,16 @@ CREATE TABLE employee (
 
 -- create some data to add to tables above
 INSERT INTO department(name)
-VALUES ("Management"),("Logistics"),("Sales"),("Research")
+VALUES ("Management"),("Logistics"),("Sales"),("Research");
 
 INSERT INTO role (title,salary,department_id)
-VALUES ("CEO",1000000.00,1),
-    ("Accountant",700000.00,2),
-    ("Salesman",50000.00,3),
-    ("Scientist",100000.00,4)
+VALUES ("CEO",1000,1),
+    ("Accountant",70,2),
+    ("Salesman",50,3),
+    ("Scientist",100,4);
 
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VLAUES ("Robert","Candler",1,NULL),
+VALUES ("Robert","Candler",1,NULL),
         ("Dustin","Hoffman",2,1),
         ("Dwight","Shrute",3,1),
         ("Gordon","Freeman",4,1)
